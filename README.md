@@ -1,11 +1,11 @@
 自己署名認証局(CA)での証明書作成
 ================================
 
-自己署名認証局(CA)で証明書を作成するコンテナで、証明書作成用のコマンドを内包した、非常駐のコンテナである。  
+自己署名認証局(CA)で証明書を作成するコンテナで、証明書作成用のコマンドを内包した、非常駐のDockerコンテナである。  
 このコンテナでは、 CFSSL (CloudFlare's PKI/TLS toolkit) を使って、
 証明書を作成している。  
 CFSSLでは、jsonファイルと、コマンドパラメータの組み合わせで、作成するので、
-openssl を使った対話式の手順よりも、わかりやすく、簡単に作成することができると思われる。  
+openssl を使った対話式の手順よりも、わかりやすく、簡単に作成することができる。  
 
 以下は、coreos での自己署名証明書の作成方法である。  
 <https://coreos.com/os/docs/latest/generate-self-signed-certificates.html>  
@@ -100,8 +100,6 @@ docker run --rm -it \
   nginx:1.10.2-alpine
 ```
 
-ホスト名を altus5.local とした場合、
-これで、https://altus5.local/ で Hello World が表示される。  
-自己署名なので、警告は出るが、開発用には、これで十分である。  
+自己署名なので、警告は出るが、ホスト名を altus5.local とした場合、 https://altus5.local/ でHello World が表示される。  
 
 
