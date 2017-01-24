@@ -1,0 +1,13 @@
+{
+  "CN": "member1",
+  "hosts": [
+    "192.168.122.101",
+    "ext.example.com",
+    "member1.local"
+    "member1"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}

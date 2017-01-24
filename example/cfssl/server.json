@@ -1,0 +1,13 @@
+{
+  "CN": "altus5",
+  "hosts": [
+    "192.168.122.68",
+    "ext.example.com",
+    "altus5.local",
+    "altus5"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}

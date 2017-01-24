@@ -1,0 +1,16 @@
+{
+  "CN": "A5 self signed CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "JP",
+      "L": "Shinjuku-ku",
+      "O": "ALTUS-FIVE Inc.",
+      "ST": "Tokyo",
+      "OU": "Development Unit"
+    }
+  ]
+}
