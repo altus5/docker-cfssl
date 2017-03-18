@@ -11,6 +11,10 @@ openssl を使った対話式の手順よりも、わかりやすく、簡単に
 <https://coreos.com/os/docs/latest/generate-self-signed-certificates.html>  
 このDockerイメージは、ここに記載されてある、ほぼ、そのままを、コマンドにしてある。
 
+また、自己署名のCAで作成した証明書は、ブラウザでアクセスしたときに、警告が出るが、この警告が出ないようにするには、
+CAそのものを認証するために、ブラウザに独自CAの証明書をインストールする必要がある。  
+この証明書の作成手順も、コマンド例を記述してある。
+
 ## ボリューム
 
 ### 証明書が出力されるディレクトリ
@@ -48,7 +52,7 @@ openssl を使った対話式の手順よりも、わかりやすく、簡単に
 docker run --rm -it \
   -v $(pwd)/etc/cfssl:/etc/cfssl \
   -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl \
+  altus5/cfssl:0.5.1 \
   gen_server_cert.sh
 ```
 
@@ -57,7 +61,7 @@ docker run --rm -it \
 docker run --rm -it \
   -v $(pwd)/etc/cfssl:/etc/cfssl \
   -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl \
+  altus5/cfssl:0.5.1 \
   gen_peer_cert.sh
 ```
 
@@ -66,8 +70,27 @@ docker run --rm -it \
 docker run --rm -it \
   -v $(pwd)/etc/cfssl:/etc/cfssl 
   -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl \
+  altus5/cfssl:0.5.1 \
   gen_client_cert.sh
+```
+
+**ブラウザにインストールする独自CAの証明書を作成**
+```
+docker run --rm -it \
+  -v $(pwd)/etc/cfssl:/etc/cfssl \
+  -v $(pwd)/example/cfssl:/opt/cfssl/conf \
+  altus5/cfssl:0.5.1 \
+  openssl x509 -in /etc/cfssl/ca.pem -outform DER -out /etc/cfssl/ca.der
+```
+
+**サンプルの設定ファイルを取り出す**
+カレントディレクトリに、サンプルの設定ファイル（example/cfssl） を取り出す。  
+このサンプルを元に、修正変更するのが、手っ取り早い。
+```
+docker run --rm -it \
+  -v $(pwd):/srv/hoge \
+  altus5/cfssl:0.5.1 \
+  cp -r /srv/example/cfssl/ /srv/hoge/
 ```
 
 ## Nginx の適用例
@@ -101,5 +124,6 @@ docker run --rm -it \
 ```
 
 自己署名なので、警告は出るが、ホスト名を altus5.local とした場合、 https://altus5.local/ でHello World が表示される。  
+警告が出ないようにするには、ブラウザに独自CAの証明書をインストールするとよい。  
 
 

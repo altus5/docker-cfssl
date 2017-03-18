@@ -5,6 +5,7 @@ ENV DOWNLOAD_URL=https://pkg.cfssl.org/R1.2
 ENV CFSSL_BIN=/opt/cfssl/bin
 ENV CFSSL_CONF=/opt/cfssl/conf
 ENV CERT_DIR=/etc/cfssl
+ENV EXAMPLE_DIR=/srv/example
 ENV PATH=$PATH:$CFSSL_BIN
 
 RUN \
@@ -17,6 +18,7 @@ RUN \
 
 COPY bin/ $CFSSL_BIN/
 COPY conf/ $CFSSL_CONF/
+COPY example/ $EXAMPLE_DIR/
 
 RUN \
   chmod +x $CFSSL_BIN/*
