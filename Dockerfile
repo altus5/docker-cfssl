@@ -8,6 +8,17 @@ ENV CERT_DIR=/etc/cfssl
 ENV EXAMPLE_DIR=/srv/example
 ENV PATH=$PATH:$CFSSL_BIN
 
+ENV CA_CONFIG_CONF=$CFSSL_CONF/ca-config.json
+ENV CA_CSR_CONF=$CFSSL_CONF/ca-csr.json
+ENV CA_PEM=$CERT_DIR/ca.pem
+ENV CA_KEY_PEM=$CERT_DIR/ca-key.pem
+ENV SERVER_CONF=$CFSSL_CONF/server.json
+ENV SERVER_CERT_PREFIX=$CERT_DIR/server
+ENV CLIENT_CONF_GLOB=$CFSSL_CONF/client
+ENV CLIENT_CERT_DIR=$CERT_DIR
+ENV PEER_CONF_GLOB=$CFSSL_CONF/peer
+ENV PEER_CERT_DIR=$CERT_DIR
+
 RUN \
   apk add --no-cache openssl jq && \
   apk add --no-cache --virtual .builddeps curl && \
@@ -22,3 +33,4 @@ COPY example/ $EXAMPLE_DIR/
 
 RUN \
   chmod +x $CFSSL_BIN/*
+

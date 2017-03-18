@@ -4,19 +4,19 @@ set -e
 trap 'echo "ERROR $0" 1>&2' 3
 
 # generate CA
-if [ ! -e $CERT_DIR/ca.pem ]; then
-  cfssl gencert -initca $CFSSL_CONF/ca-csr.json | cfssljson -bare $CERT_DIR/ca -
+if [ ! -e $CA_PEM ]; then
+  cfssl gencert -initca $CA_CSR_CONF | cfssljson -bare $CERT_DIR/ca -
 fi
 
 # generate server certificate and private key
-hosts=`jq -r -c '.hosts | @csv' $CFSSL_CONF/server.json | sed -e 's/"//g'`
+hosts=`jq -r -c '.hosts | @csv' $SERVER_CONF | sed -e 's/"//g'`
 cfssl gencert \
-  -ca=$CERT_DIR/ca.pem \
-  -ca-key=$CERT_DIR/ca-key.pem \
-  -config=$CFSSL_CONF/ca-config.json \
+  -ca=$CA_PEM \
+  -ca-key=$CA_KEY_PEM \
+  -config=$CA_CONFIG_CONF \
   -profile=server \
   -hostname="$hosts" \
-  $CFSSL_CONF/server.json - \
-  | cfssljson -bare $CERT_DIR/server
+  $SERVER_CONF - \
+  | cfssljson -bare $SERVER_CERT_PREFIX
 
 echo "SUCCESS $0"
