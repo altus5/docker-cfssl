@@ -3,10 +3,8 @@
 set -e
 trap 'echo "ERROR $0" 1>&2' 3
 
-# generate CA
-if [ ! -e $CA_PEM ]; then
-  cfssl gencert -initca $CA_CSR_CONF | cfssljson -bare $CERT_DIR/ca -
-fi
+basedir=$(cd $(dirname $0) && pwd)
+. $basedir/gen_ca_cert.sh
 
 # generate server certificate and private key
 hosts=`jq -r -c '.hosts | @csv' $SERVER_CONF | sed -e 's/"//g'`

@@ -50,47 +50,48 @@ CAそのものを認証するために、ブラウザに独自CAの証明書を�
 **サーバー証明書**  
 ```
 docker run --rm -it \
-  -v $(pwd)/etc/cfssl:/etc/cfssl \
-  -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl:0.5.1 \
+  -v $(pwd)/certs:/etc/cfssl \
+  -v $(pwd)/conf:/opt/cfssl/conf \
+  altus5/cfssl:0.5.2 \
   gen_server_cert.sh
 ```
 
 **ピア証明書**  
 ```
 docker run --rm -it \
-  -v $(pwd)/etc/cfssl:/etc/cfssl \
-  -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl:0.5.1 \
+  -v $(pwd)/certs:/etc/cfssl \
+  -v $(pwd)/conf:/opt/cfssl/conf \
+  altus5/cfssl:0.5.2 \
   gen_peer_cert.sh
 ```
 
 **クライアント証明書**  
 ```
 docker run --rm -it \
-  -v $(pwd)/etc/cfssl:/etc/cfssl 
+  -v $(pwd)/certs:/etc/cfssl 
   -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl:0.5.1 \
+  altus5/cfssl:0.5.2 \
   gen_client_cert.sh
 ```
 
 **ブラウザにインストールする独自CAの証明書を作成**
 ```
 docker run --rm -it \
-  -v $(pwd)/etc/cfssl:/etc/cfssl \
-  -v $(pwd)/example/cfssl:/opt/cfssl/conf \
-  altus5/cfssl:0.5.1 \
+  -v $(pwd)/certs:/etc/cfssl \
+  -v $(pwd)/conf:/opt/cfssl/conf \
+  altus5/cfssl:0.5.2 \
   openssl x509 -in /etc/cfssl/ca.pem -outform DER -out /etc/cfssl/ca.der
 ```
 
 **サンプルの設定ファイルを取り出す**
-カレントディレクトリに、サンプルの設定ファイル（example/cfssl） を取り出す。  
-このサンプルを元に、修正変更するのが、手っ取り早い。
+カレントディレクトリにサンプルの設定ファイルを取り出す。  
+以下のコマンドでは、 ./cfssl にコピーされるので、このサンプルを元に、
+修正変更するのが、手っ取り早い。
 ```
 docker run --rm -it \
   -v $(pwd):/srv/hoge \
-  altus5/cfssl:0.5.1 \
-  cp -r /srv/example/cfssl/ /srv/hoge/
+  altus5/cfssl:0.5.2 \
+  cp -r /opt/cfssl/conf /srv/hoge/cfssl
 ```
 
 ## Nginx の適用例
@@ -115,7 +116,7 @@ server {
 **nginxコンテナの起動**  
 ```
 docker run --rm -it \
-  -v $(pwd)/etc/cfssl:/etc/cfssl \
+  -v $(pwd)/certs:/etc/cfssl \
   -v $(pwd)/example/nginx/conf.d:/etc/nginx/conf.d \
   -v $(pwd)/example/nginx/www:/var/www \
   -p 80:80 \

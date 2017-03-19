@@ -3,10 +3,8 @@
 set -e
 trap 'echo "ERROR $0" 1>&2' 3
 
-# generate CA
-if [ ! -e $CA_PEM ]; then
-  cfssl gencert -initca $CA_CSR_CONF | cfssljson -bare $CERT_DIR/ca -
-fi
+basedir=$(cd $(dirname $0) && pwd)
+. $basedir/gen_ca_cert.sh
 
 # generate member certificate and private key
 for conf in $(find $CLIENT_CONF_GLOB -type f)
